@@ -1,5 +1,5 @@
-class CompletedWordsController < ApplicationController
-  before_action :set_completed_word, only: [:show, :update, :destroy]
+class CompletedWordsController < OpenReadController
+  before_action :set_completed_word, only: [:update, :destroy]
 
   # GET /completed_words
   # GET /completed_words.json
@@ -47,13 +47,13 @@ class CompletedWordsController < ApplicationController
     head :no_content
   end
 
-  private
+  def set_completed_word
+    @completed_word = CompletedWord.find(params[:id])
+  end
 
-    def set_completed_word
-      @completed_word = CompletedWord.find(params[:id])
-    end
+  def completed_word_params
+    params.require(:completed_word).permit(:user_id, :word_id)
+  end
 
-    def completed_word_params
-      params.require(:completed_word).permit(:user_id, :word_id)
-    end
+  private :set_completed_word, :completed_word_params
 end

@@ -1,5 +1,6 @@
-class WordsController < ApplicationController
-  before_action :set_word, only: [:show, :update, :destroy]
+class WordsController < OpenReadController
+  # class WordsController < ApplicationController
+  before_action :set_word, only: [:update, :destroy]
 
   # GET /words
   # GET /words.json
@@ -54,13 +55,13 @@ class WordsController < ApplicationController
     head :no_content
   end
 
-  private
+  def set_word
+    @word = Word.find(params[:id])
+  end
 
-    def set_word
-      @word = Word.find(params[:id])
-    end
+  def word_params
+    params.require(:word).permit(:word, :difficulty, :creator)
+  end
 
-    def word_params
-      params.require(:word).permit(:word, :difficulty, :creator)
-    end
+  private :set_word, :word_params
 end
