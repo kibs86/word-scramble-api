@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
-  resources :completed_words, except: [:new, :edit]
   resources :examples, except: [:new, :edit]
   # Auth Routes
   post '/sign-up' => 'users#signup'
@@ -12,4 +11,6 @@ Rails.application.routes.draw do
   # Game Routes
   resources :words, only: [:index, :show]
   get '/get-word/:difficulty' => 'words#getword'
+
+  resources :completed_words, only: [:index, :show, :create]
 end
