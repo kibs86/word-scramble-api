@@ -15,6 +15,13 @@ class WordsController < ApplicationController
     render json: @word
   end
 
+  def getword
+    @diff = params[:difficulty]
+    @words = Word.where('difficulty' => @diff).ids
+    @word = Word.find(@words[rand(@words.length)])
+    render json: @word
+  end
+
   # POST /words
   # POST /words.json
   def create
