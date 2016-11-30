@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
+  resources :completed_words, except: [:new, :edit]
   resources :examples, except: [:new, :edit]
   # Auth Routes
   post '/sign-up' => 'users#signup'
