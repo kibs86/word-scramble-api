@@ -34,11 +34,11 @@ class WordsController < OpenReadController
     # word.completed_words in word model and pass through user
     # activerecord - negated query, where not
     @comp_words = \
-      Word.joins(:completed_words).where('completed_words.user_id' => current_user).ids
+      Word.joins(:completed_words).where('completed_words.user_id' => current_user.id)
   end
 
   def fetch_cust_response
-    @custom_response = { word: { id: '', word: '', creator: '', difficulty: ''} }
+    @custom_response = { word: { id: '', word: '', owner_id: '', difficulty: ''} }
   end
 
   def getword
@@ -65,8 +65,9 @@ class WordsController < OpenReadController
   # POST /words
   # POST /words.json
   def create
-    @word = Word.new(word_params)
-    # @word = current_user.words.build(word_params)
+    # @word = Word.new(word_params)
+    @word = current_user.words.build(word_params)
+    @word.owner_id = current_user.id
 
     if @word.save
       render json: @word, status: :created, location: @word
@@ -97,16 +98,16 @@ class WordsController < OpenReadController
   end
 
   def set_word
-    @word = Word.find(params[:id])
-    # @word = current_user.words.find(params[:id])
+    # @word = Word.find(params[:id])
+    @word = current_user.words.find(params[:id])
   end
 
   def word_params
-    params.require(:word).permit(:word, :difficulty, :creator)
+    params.require(:word).permit(:word, :difficulty, :owner_id)
   end
 
   def base_query
-    Word.where('creator = :user', user: current_user.email).order(:id)
+    Word.where('owner_id = :user', user: current_user.id).order(:id)
   end
 
   private :set_word, :word_params, :base_query

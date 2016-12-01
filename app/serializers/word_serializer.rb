@@ -1,3 +1,3 @@
 class WordSerializer < ActiveModel::Serializer
-  attributes :id, :word, :difficulty, :creator
+  attributes :id, :word, :difficulty, :owner_id
 end
