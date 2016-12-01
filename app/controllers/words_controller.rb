@@ -1,19 +1,26 @@
 class WordsController < OpenReadController
   # class WordsController < ApplicationController
-  before_action :set_word, only: [:update, :destroy]
+  before_action :set_word, only: [:show, :update, :destroy]
   before_action :fetch_comp_words, only: [:getword]
   before_action :fetch_cust_response, only: [:getword]
 
   # GET /words
   # GET /words.json
   def index
-    @words = Word.all.pluck(:word)
+    restrict = params[:restrict]
+    # diff = params[:difficulty]
+    @words = if restrict.blank?
+               Word.all
+             else
+               base_query
+             end
 
+    # @words = if diff.blank?
+    #            Word.all?
+    #          else
+    #            # stuff
+    #          end
     render json: @words
-  end
-
-  def mywords
-    render json: base_query
   end
 
   # GET /words/1
@@ -24,6 +31,8 @@ class WordsController < OpenReadController
 
   def fetch_comp_words
     # get a list of all completed words
+    # word.completed_words in word model and pass through user
+    # activerecord - negated query, where not
     @comp_words = \
       Word.joins(:completed_words).where('completed_words.user_id' => current_user).ids
   end
@@ -56,7 +65,8 @@ class WordsController < OpenReadController
   # POST /words
   # POST /words.json
   def create
-    @word = Word.new(word_params)
+    # @word = Word.new(word_params)
+    @word = current_user.words.build(word_params)
 
     if @word.save
       render json: @word, status: :created, location: @word
@@ -68,7 +78,7 @@ class WordsController < OpenReadController
   # PATCH/PUT /words/1
   # PATCH/PUT /words/1.json
   def update
-    @word = Word.find(params[:id])
+    # @word = Word.find(params[:id])
 
     if @word.update(word_params)
       # head :no_content
@@ -87,7 +97,8 @@ class WordsController < OpenReadController
   end
 
   def set_word
-    @word = Word.find(params[:id])
+    # @word = Word.find(params[:id])
+    @word = current_user.words.find(params[:id])
   end
 
   def word_params
