@@ -65,8 +65,8 @@ class WordsController < OpenReadController
   # POST /words
   # POST /words.json
   def create
-    # @word = Word.new(word_params)
-    @word = current_user.words.build(word_params)
+    @word = Word.new(word_params)
+    # @word = current_user.words.build(word_params)
 
     if @word.save
       render json: @word, status: :created, location: @word
@@ -97,8 +97,8 @@ class WordsController < OpenReadController
   end
 
   def set_word
-    # @word = Word.find(params[:id])
-    @word = current_user.words.find(params[:id])
+    @word = Word.find(params[:id])
+    # @word = current_user.words.find(params[:id])
   end
 
   def word_params
