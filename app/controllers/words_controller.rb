@@ -7,9 +7,13 @@ class WordsController < OpenReadController
   # GET /words
   # GET /words.json
   def index
-    @words = Word.all
+    @words = Word.all.pluck(:word)
 
     render json: @words
+  end
+
+  def mywords
+    render json: base_query
   end
 
   # GET /words/1
@@ -67,7 +71,8 @@ class WordsController < OpenReadController
     @word = Word.find(params[:id])
 
     if @word.update(word_params)
-      head :no_content
+      # head :no_content
+      render json: base_query
     else
       render json: @word.errors, status: :unprocessable_entity
     end
@@ -89,5 +94,9 @@ class WordsController < OpenReadController
     params.require(:word).permit(:word, :difficulty, :creator)
   end
 
-  private :set_word, :word_params
+  def base_query
+    Word.where('creator = :user', user: current_user.email).order(:id)
+  end
+
+  private :set_word, :word_params, :base_query
 end

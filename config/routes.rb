@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
 
   # Game Routes
-  resources :words, only: [:index, :show]
+  resources :words, only: [:index, :show, :update]
+  get '/my-words' => 'words#mywords'
   get '/get-word/:difficulty' => 'words#getword'
 
   resources :completed_words, only: [:index, :show, :create]
