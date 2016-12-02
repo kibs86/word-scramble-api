@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   resources :words, only: [:index, :show, :update, :create]
   get '/get-word/:difficulty' => 'words#getword'
 
-  resources :completed_words, only: [:index, :show, :create, :destroy]
+  resources :completed_words, only: [:index, :show, :create]
+  delete '/completed_words/destroy_all' => 'completed_words#destroy'
 end
