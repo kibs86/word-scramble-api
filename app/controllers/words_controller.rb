@@ -1,7 +1,6 @@
 class WordsController < OpenReadController
   # class WordsController < ApplicationController
   before_action :set_word, only: [:show, :update]
-  before_action :fetch_comp_words, only: [:getword]
   before_action :fetch_cust_response, only: [:getword]
 
   # GET /words
@@ -24,14 +23,6 @@ class WordsController < OpenReadController
     render json: @word
   end
 
-  def fetch_comp_words
-    # get a list of all completed words
-    # word.completed_words in word model and pass through user
-    # activerecord - negated query, where not
-    @comp_words = \
-      Word.joins(:completed_words).where('completed_words.user_id' => current_user.id).ids
-  end
-
   def fetch_cust_response
     @custom_response = { word: { id: '', word: '', owner_id: '', difficulty: ''} }
   end
@@ -40,14 +31,7 @@ class WordsController < OpenReadController
     # get difficulty from parameters
     @diff = params[:difficulty]
 
-    # get a list of all words with that difficulty tier
-    @diff_words = Word.where('difficulty' => @diff).ids
-
-    # remove ids from @words that are in @comp_words
-    @words = []
-    @diff_words.each do |x|
-      @words.push(x) if @comp_words.exclude?(x)
-    end
+    @words = Word.find_word(current_user.id, @diff)
 
     # if words array is empty, send back custom response for error handling
     return render json: @custom_response if @words.empty?
