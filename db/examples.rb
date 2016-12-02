@@ -17,6 +17,10 @@
 #                password: 'abc123',
 #                password_confirmation: nil)
 # end
+User.create!(email: 'kladmin@kl.com',
+             password: 'k',
+             password_confirmation: nil)
+
 Word.create([
               { word: 'grew',
                 difficulty: 'easy',
