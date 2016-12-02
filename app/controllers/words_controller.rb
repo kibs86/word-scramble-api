@@ -66,7 +66,7 @@ class WordsController < OpenReadController
   # POST /words.json
   def create
     # @word = Word.new(word_params)
-    @word = current_user.words.build(word_params)
+    @word = current_user.owned_words.build(word_params)
     @word.owner_id = current_user.id
 
     if @word.save
@@ -99,7 +99,7 @@ class WordsController < OpenReadController
 
   def set_word
     # @word = Word.find(params[:id])
-    @word = current_user.words.find(params[:id])
+    @word = current_user.owned_words.find(params[:id])
   end
 
   def word_params

@@ -17,7 +17,6 @@
 #                password: 'abc123',
 #                password_confirmation: nil)
 # end
-
 Word.create([
               { word: 'grew',
                 difficulty: 'easy',
