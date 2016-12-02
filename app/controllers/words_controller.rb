@@ -34,7 +34,7 @@ class WordsController < OpenReadController
     # word.completed_words in word model and pass through user
     # activerecord - negated query, where not
     @comp_words = \
-      Word.joins(:completed_words).where('completed_words.user_id' => current_user.id)
+      Word.joins(:completed_words).where('completed_words.user_id' => current_user.id).ids
   end
 
   def fetch_cust_response
