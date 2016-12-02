@@ -1,6 +1,6 @@
 class WordsController < OpenReadController
   # class WordsController < ApplicationController
-  before_action :set_word, only: [:show, :update, :destroy]
+  before_action :set_word, only: [:show, :update]
   before_action :fetch_comp_words, only: [:getword]
   before_action :fetch_cust_response, only: [:getword]
 
@@ -8,18 +8,13 @@ class WordsController < OpenReadController
   # GET /words.json
   def index
     restrict = params[:restrict]
-    # diff = params[:difficulty]
+
     @words = if restrict.blank?
                Word.all
              else
                base_query
              end
 
-    # @words = if diff.blank?
-    #            Word.all?
-    #          else
-    #            # stuff
-    #          end
     render json: @words
   end
 
@@ -91,11 +86,11 @@ class WordsController < OpenReadController
 
   # DELETE /words/1
   # DELETE /words/1.json
-  def destroy
-    @word.destroy
-
-    head :no_content
-  end
+  # def destroy
+  #   @word.destroy
+  #
+  #   head :no_content
+  # end
 
   def set_word
     # @word = Word.find(params[:id])
@@ -103,7 +98,8 @@ class WordsController < OpenReadController
   end
 
   def word_params
-    params.require(:word).permit(:word, :difficulty, :owner_id)
+    # params.require(:word).permit(:word, :difficulty, :owner_id)
+    params.require(:word).permit(:word, :difficulty)
   end
 
   def base_query

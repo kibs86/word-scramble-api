@@ -1,6 +1,6 @@
 class CompletedWordsController < OpenReadController
   # before_action :set_completed_word, only: [:update, :destroy]
-  before_action :set_completed_word, only: [:update]
+  # before_action :set_completed_word, only: [:update]
 
   # GET /completed_words
   # GET /completed_words.json
@@ -32,15 +32,15 @@ class CompletedWordsController < OpenReadController
 
   # PATCH/PUT /completed_words/1
   # PATCH/PUT /completed_words/1.json
-  def update
-    @completed_word = CompletedWord.find(params[:id])
-
-    if @completed_word.update(completed_word_params)
-      head :no_content
-    else
-      render json: @completed_word.errors, status: :unprocessable_entity
-    end
-  end
+  # def update
+  #   @completed_word = CompletedWord.find(params[:id])
+  #
+  #   if @completed_word.update(completed_word_params)
+  #     head :no_content
+  #   else
+  #     render json: @completed_word.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # DELETE /completed_words/1
   # DELETE /completed_words/1.json
